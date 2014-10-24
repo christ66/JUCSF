@@ -9,19 +9,28 @@ import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 import org.kohsuke.stapler.DataBoundConstructor;
 
+import java.io.IOException;
 import java.io.PrintStream;
 
 @Extension
 public class BeerBuilder extends Builder {
-        @DataBoundConstructor
-	public BeerBuilder(){}
+    public String name;
+
+    @DataBoundConstructor
+	public BeerBuilder(String name){
+            this.name = name;
+        }
+
+    public BeerBuilder(){
+        this("");
+    }
 
     public boolean perform(AbstractBuild<?,?> build,
 		    Launcher launcher,
-		    BuildListener listener) {
-
+		    BuildListener listener) throws IOException {
+listener.annotate(new BeerAnnotation());
 PrintStream console = listener.getLogger();
-console.println("hello JUC");
+console.println("hello " + name);
 return true;
     }
 
